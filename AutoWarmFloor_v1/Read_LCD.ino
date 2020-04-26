@@ -3,7 +3,7 @@
 void privetstvie() 
 {     
    lcd.setCursor(0, 0);
-   lcd.print("----AutoWatering----");    // ---AutoWatering----
+   lcd.print("---AutoWarmFloor---");    // ---AutoWatering----
    lcd.setCursor(0, 1);                  // *DATE: 08.08.1976*
    lcd.print("DATE: ");                  // *TIME: 22:08:54  *
    lcd.print(rtc.getDateStr()); 
@@ -49,18 +49,19 @@ void Ekran()
 //                   НАЧАЛО ОТОБРАЖЕНИЯ ИНФОРМАЦИИ НА ЭКРАНАХ      
 void Read_ekran(){
 
-if (ekran==0)                  //переменная ekran=0 (+), главный экран.
-   {                            //отображаем
-   lcd.setCursor(0, 0);  lcd.print("T1:"); lcd.setCursor(5, 0); lcd.print(T1);
-   lcd.setCursor(0, 1);  lcd.print("T1:"); lcd.setCursor(5, 1); lcd.print(T1);
+if (ekran==0){                 //переменная ekran=0 (+), главный экран.                               
+   lcd.setCursor(0, 0);  lcd.print("T1:"); lcd.setCursor(5, 0); lcd.print(T1); lcd.setCursor(8, 0); lcd.print("t3:"); lcd.setCursor(12, 0); lcd.print(T1);
+   lcd.setCursor(0, 1);  lcd.print("T2:"); lcd.setCursor(5, 1); lcd.print(T1); lcd.setCursor(8, 1); lcd.print("t4:"); lcd.setCursor(12, 1); lcd.print(T1);
    lcd.setCursor(12, 2); lcd.print(rtc.getTimeStr());
-   lcd.setCursor(10, 3); lcd.print(rtc.getDateStr()); } 
+   lcd.setCursor(10, 3); lcd.print(rtc.getDateStr()); 
+   } 
   
 else if (ekran==1){  
-   lcd.setCursor(0, 0);         
-   lcd.print("T1gar|V2gar|");    
-   lcd.setCursor(0, 1);        
-   lcd.print(T1, 0); }
+   lcd.setCursor(0, 0); lcd.print("TestPWM (1-100%)");       
+   lcd.setCursor(0, 1); lcd.print("long '5' - CHANGE/OK");    
+   lcd.setCursor(0, 2); lcd.print("'2'-UP / '8'-DOWN");      
+   lcd.setCursor(0, 3); lcd.print("PWM"); lcd.setCursor(4, 3); lcd.print(SHIM); lcd.setCursor(7, 3); lcd.print("% | TEMP"); lcd.setCursor(16, 3); lcd.print(T1); lcd.setCursor(18, 3); lcd.print("C");
+   }
 
 else if (ekran==2){
    }
