@@ -11,12 +11,12 @@ void privetstvie()
    lcd.print("TIME: ");         
    lcd.print(rtc.getTimeStr());
    lcd.setCursor(0, 3);  
-   lcd.print("T1:"); lcd.setCursor(5, 0); lcd.print(T1);
+   lcd.print("T1:"); lcd.setCursor(5, 0); lcd.print(ds18());
    lcd.setCursor(16, 3);         
    lcd.print("v");
    lcd.setCursor(17, 3); 
    lcd.print(version, 1);
-   delay (5000);
+   delay (3000);
    lcd.clear();
    
    
@@ -28,7 +28,7 @@ void privetstvie()
 void Ekran()
    {
    if (m==0){ ekran = 0; }
-   if (m==1){ ekran = 1; }
+   if (m==1){ ekran = 10; }
    if (m==2){ ekran = 2; }
    if (m==3){ ekran = 3; }
    if (m==4){ ekran = 4; }
@@ -50,17 +50,17 @@ void Ekran()
 void Read_ekran(){
 
 if (ekran==0){                 //переменная ekran=0 (+), главный экран.                               
-   lcd.setCursor(0, 0);  lcd.print("T1:"); lcd.setCursor(5, 0); lcd.print(T1); lcd.setCursor(8, 0); lcd.print("t3:"); lcd.setCursor(12, 0); lcd.print(T1);
-   lcd.setCursor(0, 1);  lcd.print("T2:"); lcd.setCursor(5, 1); lcd.print(T1); lcd.setCursor(8, 1); lcd.print("t4:"); lcd.setCursor(12, 1); lcd.print(T1);
+   lcd.setCursor(0, 0);  lcd.print("T1:"); lcd.setCursor(5, 0); lcd.print(ds18()); lcd.setCursor(8, 0); lcd.print("t3:"); lcd.setCursor(12, 0); lcd.print(ds18());
+   lcd.setCursor(0, 1);  lcd.print("T2:"); lcd.setCursor(5, 1); lcd.print(ds18()); lcd.setCursor(8, 1); lcd.print("t4:"); lcd.setCursor(12, 1); lcd.print(ds18());
    lcd.setCursor(12, 2); lcd.print(rtc.getTimeStr());
    lcd.setCursor(10, 3); lcd.print(rtc.getDateStr()); 
    } 
   
-else if (ekran==1){  
+else if (ekran==10){  
    lcd.setCursor(0, 0); lcd.print("TestPWM (1-100%)");       
    lcd.setCursor(0, 1); lcd.print("long '5' - CHANGE/OK");    
    lcd.setCursor(0, 2); lcd.print("'2'-UP / '8'-DOWN");      
-   lcd.setCursor(0, 3); lcd.print("PWM"); lcd.setCursor(4, 3); lcd.print(SHIM); lcd.setCursor(7, 3); lcd.print("% | TEMP"); lcd.setCursor(16, 3); lcd.print(T1); lcd.setCursor(18, 3); lcd.print("C");
+   lcd.setCursor(0, 3); lcd.print("PWM"); lcd.setCursor(4, 3); lcd.print(SHIM); lcd.setCursor(7, 3); lcd.print("% | TEMP"); lcd.setCursor(16, 3); lcd.print(ds18()); lcd.setCursor(18, 3); lcd.print("C");
    }
 
 else if (ekran==2){

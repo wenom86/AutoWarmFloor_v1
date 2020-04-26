@@ -14,11 +14,16 @@ AmperkaKB KB(42, 43, 44, 45, 46, 47, 48, 49); //номера пинов арду
 OneWire ds(7);                  // линия 1-Wire (DS18b20 и т.д) будет на pin 7
 LiquidCrystal lcd(22, 28, 23, 24, 25, 26, 27);   // для МЕГИ 2560. (A=5v/K=GND)(VSS=GND/VDD=5v/RS=pin22/RW=pin28/E=pin23/D4=pin24/D5=pin25/D6=pin26/D7=pin27).
 DS3231  rtc(20, 21);            //шина, на которую подключены часы (для ардуино нано на 328 чипе, это пины A4/A5)(для меги - пины 20/21).
+long previousMillisLCDbrightness = 0; //счетчик прошедшего времени для Автовылючения подсветки LCD
+unsigned long IntervalReadSensorDS = 5000;                // интервал считывания показаний с DS18b20.
+unsigned long ValueMillisPreviousReadSensorDS = 0;
+long intervalLCDbrightness = 30000;  //задержка Автовыключения подсветки LCD (по умолчанию 300000 = 5 минут)
 #define LCDbright 31            // управление вкл/выкл подсветки экрана на 31 пине. 
-int T1,T2,t3,t4,SHIM;           // инициализируем переменные для значений температуры..... (T1-подача в теплый пол, T2-обратка из теплого пола, t3-желаемая темп. в помещении, t4-фактическая темп. в помещении)
+int T1,T2,t3,t4;                // инициализируем переменные для значений температуры..... (T1-подача в теплый пол, T2-обратка из теплого пола, t3-желаемая темп. в помещении, t4-фактическая темп. в помещении)
 int ekran;                      //переменная для выбора экрана меню.
 int m=0;                        //переменная для экранов меню.
-
+int SHIM=100;                   //% подачи напряжения для открытия нормально-закрытого клапана при начальной настройке.
+ 
 
 
 void setup() {
@@ -38,40 +43,20 @@ privetstvie();         // Выводим приветствие на экран 
 }
 void loop() {
 
+unsigned long currentMillis = millis();                                                                //Присваивание значения общей переменной отсчета времени.                                                                
+
+if(currentMillis - previousMillisLCDbrightness > intervalLCDbrightness)                                //Если счетчик достиг интервала. 
+{previousMillisLCDbrightness = currentMillis;  digitalWrite(LCDbright, LOW); Serial.print("LCDbright OFF");}  //выключаем подсветку LCD, сообщаем в serial.
+if(currentMillis - ValueMillisPreviousReadSensorDS > IntervalReadSensorDS)                             //Если счетчик превысил интервал, то:
+{ ds18(); ValueMillisPreviousReadSensorDS = currentMillis; Serial.print("18b20: "); Serial.println(ds18()); }  //Cчитываем показания DS18b20, сообщаем в serial.
 
 
-KB.read();                   //считываем нажатие кнопок клавиатуры.
-if (KB.justPressed()) {
-    // печатаем номер кнопки и её символ в последовательный порт
-    Serial.print("Key is press ");
-    Serial.print(KB.getNum);
-    Serial.print(" = \"");
-    Serial.print(KB.getChar);
-    Serial.println("\"");
-  }
-  // определяем отжатие кнопки
-  if (KB.justReleased()) {
-    // печатаем номер кнопки и её символ в последовательный порт
-    Serial.print("Key is release ");
-    Serial.print(KB.getNum);
-    Serial.print(" = \"");
-    Serial.print(KB.getChar);
-    Serial.println("\"");
-  }
-  // определяем зажатие кнопки на 3 секунды
-  if (KB.isHold()) {
-    // печатаем номер кнопки и её символ в последовательный порт
-    Serial.print("Key on long press ");
-    Serial.print(KB.getNum);
-    Serial.print(" = \"");
-    Serial.print(KB.getChar);
-    Serial.println("\"");
-  }   
 
-NajatieUpDownLeftRight();    // Обрабатываем нажатие клавиш Вверх/Вниз. (вкладка Read_KEYBOARD)  
+NajatieUpDownLeftRight();    // Обрабатываем нажатие клавиш Вверх/Вниз. (вкладка Read_KEYBOARD)
+Ekran();                     // Отображение экрана в зависимости от переменной m (вкладка Read_LCD)
 Read_ekran();                // Отображаем содержимое выбранного экрана (вкладка Read_LCD)
 
 
-
+                                                          
 
 }
